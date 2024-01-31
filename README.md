@@ -9,7 +9,7 @@ beaver 是一款基于lua 异步IO 实现的开发框架，你可以在此基础
 
 # 2、beaver 目录组成
 
-首先下载beaver 发布包，[链接](https://gitee.com/chuyansz/beaver/releases/download/0.1-1/beaver-x64.0.1-1.tar.gz)，将目录解压后，对应的目录结构如下：
+首先下载beaver 发布包，[链接](https://gitee.com/chuyansz/beaver/releases/download/0.1-2/beaver-x86-0.1-2.tar.gz)，将目录解压后，对应的目录结构如下：
 
 ## 2.1、 顶层目录结构
 
@@ -35,7 +35,7 @@ beaver 应用，采用覆盖式开发，开发者仅需要修改 app/main/config
 
 # 3、快速实践
 
-我们以最简单的hello 为例，它由一个配置文件和功能函数组成
+我们以最简单的hello 为例，切换到hello 分支，它由一个配置文件和功能函数组成
 
 ## 3.1、配置文件
 
