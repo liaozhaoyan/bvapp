@@ -54,7 +54,7 @@ worker:  # 标记工作线程
 
 ## 3.2、功能代码
 
-lua/app/hello.lua
+以下代码在 hello 分支中：lua/app/hello.lua
 
 ```lua
 require("eclass")  --引入构造类声明
@@ -92,4 +92,33 @@ return Chello  -- 返回类
 * ……
 
 请不要修改tReq 里面的成员信息，避免非预期影响
+
+返回值应包含 headers 和body 的table 数据。
+
+## 3.3、渲染markdown
+
+下面的代码在markdown 分支中，lua/common/lmd 支持将markdown 文档渲染成网页，方便页面呈现。
+
+```lua
+……
+local pystring = require("pystring")  --用于字符串和文件处理
+local lmd = require("common.lmd")  -- 渲染markdown
+local mdInst = lmd.new()   -- 创建内部markdown实例
+……
+
+-- 回调函数
+local function readme(tReq)
+    local headers = {   --声明首部以及html 编码方式
+        ["Content-Type"] = "text/html; charset=UTF-8",
+    }
+    local md = pystring.with("../README.md")   -- 读取markdown内容
+    return {headers = headers, body = mdInst:toHtml(md)}
+end
+……
+
+```
+
+更新部署后，即可用chrome 浏览器查看到渲染后的markdown 效果。
+
+
 

@@ -7,13 +7,25 @@
 require("eclass")
 
 local Chello = class("hello")
+local pystring = require("pystring")
+local lmd = require("common.lmd")
+local mdInst = lmd.new()
 
 local function index(tReq)
     return {body = string.format("hello guys!")}
 end
 
+local function readme(tReq)
+    local headers = {
+        ["Content-Type"] = "text/html; charset=UTF-8",
+    }
+    local md = pystring.with("../README.md")
+    return {headers = headers, body = mdInst:toHtml(md)}
+end
+
 function Chello:_init_(inst, conf)
     inst:get("/", index)
+    inst:get("/readme", readme)
 end
 
 return Chello
