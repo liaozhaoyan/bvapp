@@ -1,13 +1,15 @@
 worker:
-  number: 1   # worker process
-  funcs:
-    - func: "httpServer"
-      mode: "TCP"
-      bind: "0.0.0.0"
-      port: 2000
-      entry: "hello"  # entry path
-    - func: "httpServer"
-      mode: "TCP"
-      bind: "0.0.0.0"
-      port: 2001
-      entry: "proxy"  # entry path
+  - number: 1   # worker process
+    funcs:
+      - func: "httpServer"
+        mode: "TCP"
+        bind: "0.0.0.0"
+        port: 2000
+        entry: "hello"  # entry path
+  - number: 2   # 2 proxy process
+    funcs:
+      - func: "httpServer"
+        mode: "TCP"
+        bind: "0.0.0.0"
+        port: 2001
+        entry: "proxy"  # entry path

@@ -9,7 +9,7 @@ beaver 是一款基于lua 异步IO 实现的开发框架，你可以在此基础
 
 # 2、beaver 目录组成
 
-首先下载beaver 发布包，[链接](https://gitee.com/chuyansz/beaver/releases/download/0.1-1/beaver-x64.0.1-1.tar.gz)，将目录解压后，对应的目录结构如下：
+首先下载beaver 发布包，[链接](https://gitee.com/chuyansz/beaver/releases/download/0.1-2/beaver-x86-0.1-2.tar.gz)，将目录解压后，对应的目录结构如下：
 
 ## 2.1、 顶层目录结构
 
@@ -35,7 +35,7 @@ beaver 应用，采用覆盖式开发，开发者仅需要修改 app/main/config
 
 # 3、快速实践
 
-我们以最简单的hello 为例，它由一个配置文件和功能函数组成
+我们以最简单的hello 为例，切换的hello分支，它由一个配置文件和功能函数组成
 
 ## 3.1、配置文件
 
@@ -43,13 +43,13 @@ main/config.yaml
 
 ```yaml
 worker:  # 标记工作线程
-  number: 1   # 工作线程数量
-  funcs:  # 功能列表
-    - func: "httpServer"   # http server 服务
-      mode: "TCP"    # TCP 了类型
-      bind: "0.0.0.0"   # 绑定IP
-      port: 2000        # 绑定端口号
-      entry: "hello"  # 入口 函数 对应在 lua/app 目录下的文件
+  - number: 1   # 工作线程数量
+    funcs:  # 功能列表
+      - func: "httpServer"   # http server 服务
+        mode: "TCP"    # TCP 了类型
+        bind: "0.0.0.0"   # 绑定IP
+        port: 2000        # 绑定端口号
+        entry: "hello"  # 入口 函数 对应在 lua/app 目录下的文件
 ```
 
 ## 3.2、功能代码
@@ -128,18 +128,20 @@ end
 
 ```
 worker:
-  number: 1   # worker process
-  funcs:
-    - func: "httpServer"
-      mode: "TCP"
-      bind: "0.0.0.0"
-      port: 2000
-      entry: "hello"  
-    - func: "httpServer"
-      mode: "TCP"
-      bind: "0.0.0.0"
-      port: 2001
-      entry: "proxy" 
+  - number: 1   # worker process
+    funcs:
+      - func: "httpServer"
+        mode: "TCP"
+        bind: "0.0.0.0"
+        port: 2000
+        entry: "hello"  # entry path
+  - number: 2   # 2 proxy process
+    funcs:
+      - func: "httpServer"
+        mode: "TCP"
+        bind: "0.0.0.0"
+        port: 2001
+        entry: "proxy"  # entry path
 ```
 
 对应proxy.lua 代码：
