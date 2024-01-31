@@ -120,5 +120,57 @@ end
 
 更新部署后，即可用chrome 浏览器查看到渲染后的markdown 效果。
 
+## 3.4、代理模式
+
+以下代码在proxy 分支中，我们通常会将http 请求关联到下一个http请求。这里演示一级级代理的效果，尝试配置两个server，对应绑定两个端口，将2001/proxy 路径代理到2000/readme 中。
+
+配置yaml
+
+```
+worker:
+  number: 1   # worker process
+  funcs:
+    - func: "httpServer"
+      mode: "TCP"
+      bind: "0.0.0.0"
+      port: 2000
+      entry: "hello"  
+    - func: "httpServer"
+      mode: "TCP"
+      bind: "0.0.0.0"
+      port: 2001
+      entry: "proxy" 
+```
+
+对应proxy.lua 代码：
+
+```
+require("eclass")
+local ChttpReq = require("http.httpReq")
+
+local Cproxy = class("proxy")
+
+local function index(tReq)
+    return {body = string.format("hello proxy!")}  -- proxy 页面标志
+end
+
+local function proxy(tReq)
+    local req = ChttpReq.new(tReq, "127.0.0.1", 2000)  -- 创建一个http 请求，指向2000端口
+    local tRes = req:get("/readme")   -- 代理请求readme
+    return {headers = tRes.headers, body = tRes.body}
+end
+
+function Cproxy:_init_(inst, conf)
+    inst:get("/", index)
+    inst:get("/proxy", proxy)  -- 代理路径
+end
+
+return Cproxy
+```
+
+访问 2001/proxy 将会返回 2000/readme 结果
+
+
+
 
 
